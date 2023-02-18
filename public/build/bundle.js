@@ -956,9 +956,7 @@ var app = (function () {
     }
 
     const onDrag = (e) => {
-
     };
-
     const onDrop = (e) => {
         console.log('Dropped');
         console.log(e);
