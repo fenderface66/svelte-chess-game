@@ -61,11 +61,10 @@ const squareIds = [
 ]
 
 describe("Board", () => {
-  
-  it("renders the squares in the correct order", () => {
-    const results = render(Board);
+  it("renders the correct amount of squares", () => {
+    const RenderedBoard = render(Board);
     squareIds.forEach((squareId) => {
-      expect(() => results.getByText(squareId)).not.toThrow();
+      expect(() => RenderedBoard.getByText(squareId)).not.toThrow();
     })
   })
 });
