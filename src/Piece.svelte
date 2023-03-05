@@ -6,6 +6,7 @@
 </script>
 
 <div
+  id="test-piece"
   data-testid="test-piece"
   on:drag={onDragPiece}
   draggable="true"

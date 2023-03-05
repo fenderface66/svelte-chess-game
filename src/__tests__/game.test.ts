@@ -8,7 +8,6 @@ describe('Chess game', () => {
       screen.debug();
       const piece = screen.getByTestId('test-piece');
       const firstSquare = screen.getByText('a2');
-      console.log(firstSquare);
       fireEvent.drag(piece)
       fireEvent.drop(firstSquare);
       const containingPieceSquare = piece.parentNode;

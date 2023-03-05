@@ -31,6 +31,7 @@ function serve() {
 }
 
 export default {
+	rootDir: 'src',
 	input: 'src/main.ts',
 	output: {
 		sourcemap: true,
