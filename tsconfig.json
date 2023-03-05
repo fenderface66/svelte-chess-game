@@ -3,7 +3,8 @@
 
   "include": ["src/**/*"],
   "compilerOptions": {
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "moduleResolution": "node"
   },
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
 }
