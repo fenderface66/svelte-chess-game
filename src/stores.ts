@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 
 export type PieceData = {
     id: string;
-    startingPosition: string;
+    position: string;
 }
 
 export type Store = {
@@ -12,6 +12,6 @@ export type Store = {
 export const game = writable({
     "test-piece": {
         id: 'test-piece',
-        startingPosition: 'a2',
+        position: 'a2',
     }
 });

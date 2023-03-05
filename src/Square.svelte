@@ -1,4 +1,5 @@
 <script>
+  import { game } from "./stores";
   export let rank;
   export let file;
 
@@ -20,6 +21,13 @@
 
   const handleDragDrop = (e) => {
     e.preventDefault();
+    game.update((n) => ({
+      ...n,
+      "test-piece": {
+        id: "test-piece",
+        position: squareId,
+      },
+    }));
     console.log(`Dropped in ${squareId}`);
   };
 </script>

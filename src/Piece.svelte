@@ -1,8 +1,5 @@
 <script>
-  const onDragPiece = (e) => {
-    console.log(e);
-    console.log("I'm being dragged");
-  };
+  const onDragPiece = (e) => {};
 </script>
 
 <div

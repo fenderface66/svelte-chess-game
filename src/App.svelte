@@ -10,13 +10,22 @@
 
   let gameState: Store = {};
 
-  const unsubscribe = game.subscribe((value) => (gameState = value));
+  const unsubscribe = game.subscribe((value) => {
+    gameState = value;
+    const piece = document.querySelector("#test-piece");
+    const newPosition = document.querySelector(
+      `#${gameState["test-piece"].position}`
+    );
+    if (newPosition) {
+      newPosition.appendChild(piece);
+    }
+  });
   const startGame = () => {
     Object.keys(gameState).map((key) => {
       const pieceData: PieceData = gameState[key];
       const piece = document.querySelector(`#${pieceData.id}`);
       const startingSquareNode = document.querySelector(
-        `#${pieceData.startingPosition}`
+        `#${pieceData.position}`
       );
       startingSquareNode.appendChild(piece);
     });
