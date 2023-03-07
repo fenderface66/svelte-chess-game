@@ -1,20 +1,39 @@
 <script>
-  const onDragPiece = (e) => {};
+  import { game } from "./stores";
+  export let id;
+  export let color;
+
+  const onDragPiece = (e) => {
+    game.update((n) => {
+      console.log(n);
+      return {
+        ...n,
+        activePiece: id,
+      };
+    });
+  };
 </script>
 
 <div
-  id="test-piece"
-  data-testid="test-piece"
+  {id}
+  data-testid={id}
   on:drag={onDragPiece}
   draggable="true"
-  class="test-piece"
+  class={`piece ${color}`}
 />
 
 <style>
-  .test-piece {
+  .piece {
     width: 20px;
     height: 20px;
-    background-color: gray;
     cursor: grab;
+    border: 1px solid black;
+  }
+  .white {
+    background-color: azure;
+  }
+
+  .black {
+    background-color: slategray;
   }
 </style>

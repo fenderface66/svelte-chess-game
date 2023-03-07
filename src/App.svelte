@@ -3,39 +3,48 @@
   import { get } from "svelte/store";
   import Board from "./Board.svelte";
   import Piece from "./Piece.svelte";
-  import { game, PieceData, Store } from "./stores";
+  import { game, gameData, PieceData, Store } from "./stores";
 
   let board;
   let piece;
 
-  let gameState: Store = {};
+  let gameState: Store = {
+    activePiece: null,
+    pieces: [],
+  };
 
   const unsubscribe = game.subscribe((value) => {
     gameState = value;
-    const piece = document.querySelector("#test-piece");
-    const newPosition = document.querySelector(
-      `#${gameState["test-piece"].position}`
-    );
-    if (newPosition) {
-      newPosition.appendChild(piece);
+    if (!!gameState.activePiece) {
+      const activePieceData = gameState.pieces.find(
+        (piece) => piece.id === gameState.activePiece
+      );
+      const activePieceElement = document.querySelector(
+        `#${activePieceData.id}`
+      );
+      const newSquarePosition = document.querySelector(
+        `#${activePieceData.position}`
+      );
+      newSquarePosition.appendChild(activePieceElement);
     }
   });
   const startGame = () => {
-    Object.keys(gameState).map((key) => {
-      const pieceData: PieceData = gameState[key];
-      const piece = document.querySelector(`#${pieceData.id}`);
+    gameState.pieces.map((piece) => {
+      const pieceData: PieceData = piece;
+      const pieceElement = document.querySelector(`#${pieceData.id}`);
       const startingSquareNode = document.querySelector(
         `#${pieceData.position}`
       );
-      startingSquareNode.appendChild(piece);
+      startingSquareNode.appendChild(pieceElement);
     });
   };
 
-  console.log(gameState);
   onDestroy(unsubscribe);
 </script>
 
 <main>
   <Board {startGame} />
-  <Piece />
+  {#each gameData.pieces as piece}
+    <Piece id={piece.id} color={piece.color} />
+  {/each}
 </main>

@@ -1,9 +1,14 @@
-<script>
-  import { game } from "./stores";
+<script lang="ts">
+  import { game, Store } from "./stores";
   export let rank;
   export let file;
 
   const squareId = `${file}${rank}`;
+
+  let gameState: Store = {
+    activePiece: null,
+    pieces: [],
+  };
 
   const backgroundColour =
     (((["a", "c", "e", "g"].includes(file) && rank % 2 !== 0) ||
@@ -23,10 +28,17 @@
     e.preventDefault();
     game.update((n) => ({
       ...n,
-      "test-piece": {
-        id: "test-piece",
-        position: squareId,
-      },
+      pieces: n.pieces.map((piece) => {
+        if (piece.id === n.activePiece) {
+          console.log("ACTIVE PIECE DROPPED", n.activePiece);
+          console.log({ squareId });
+          return {
+            ...piece,
+            position: squareId,
+          };
+        }
+        return piece;
+      }),
     }));
     console.log(`Dropped in ${squareId}`);
   };

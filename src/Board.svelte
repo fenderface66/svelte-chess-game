@@ -15,7 +15,9 @@
     <Row rank="7" />
     <Row rank="8" />
   </div>
-  <button on:click={() => startGame(board)}>Start Game</button>
+  <button data-testid="start-button" on:click={() => startGame(board)}
+    >Start Game</button
+  >
 </div>
 
 <style>
