@@ -4,13 +4,10 @@
   export let color;
 
   const onDragPiece = (e) => {
-    game.update((n) => {
-      console.log(n);
-      return {
-        ...n,
-        activePiece: id,
-      };
-    });
+    game.update((n) => ({
+      ...n,
+      activePiece: id,
+    }));
   };
 </script>
 
