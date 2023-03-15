@@ -43,7 +43,6 @@ export const resolveMovement = (pieceType: Piece, currentSquare: string) => {
     const [file, rank] = currentSquare.split('');
     pieceMovement.vertical.map(vDistance => {
         const newRank = parseInt(rank) + vDistance;
-        console.log({newRank});
         pieceMovement.horizontal.map(hDistance => {
             const currentFileIndex = virtualBoard[newRank].indexOf(file);
             const newFile = virtualBoard[newRank][currentFileIndex + hDistance];

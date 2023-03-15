@@ -498,6 +498,40 @@ var app = (function () {
         return { set, update, subscribe };
     }
 
+    const pieceMovementMap = {
+        pawn: {
+            vertical: [1, 2],
+            horizontal: [0],
+            diagonal: [0],
+            order: null
+        }
+    };
+    const virtualBoard = {
+        '1': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '2': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '3': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '4': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '5': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '6': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '7': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+        '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    };
+    const resolveMovement = (pieceType, currentSquare) => {
+        const legalSquares = [];
+        const pieceMovement = pieceMovementMap[pieceType];
+        if (!pieceMovement.order) ;
+        const [file, rank] = currentSquare.split('');
+        pieceMovement.vertical.map(vDistance => {
+            const newRank = parseInt(rank) + vDistance;
+            pieceMovement.horizontal.map(hDistance => {
+                const currentFileIndex = virtualBoard[newRank].indexOf(file);
+                const newFile = virtualBoard[newRank][currentFileIndex + hDistance];
+                legalSquares.push(`${newFile}${newRank}`);
+            });
+        });
+        return legalSquares;
+    };
+
     const gameData = {
         activePiece: null,
         "pieces": [
@@ -578,7 +612,7 @@ var app = (function () {
     			: "white square") + " svelte-1iwnem7"));
 
     			attr_dev(div, "ondragover", "return false");
-    			add_location(div, file_1, 32, 0, 1036);
+    			add_location(div, file_1, 40, 0, 1298);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -633,6 +667,11 @@ var app = (function () {
     	let { file } = $$props;
     	const squareId = `${file}${rank}`;
     	let gameState = { activePiece: null, pieces: [] };
+
+    	game.subscribe(value => {
+    		gameState = value;
+    	});
+
     	const backgroundColour = (["a", "c", "e", "g"].includes(file) && rank % 2 !== 0 || ["b", "d", "f", "h"].includes(file) && rank % 2 === 0) && "black" || "white";
 
     	const handleDragEnter = e => {
@@ -649,9 +688,13 @@ var app = (function () {
     		game.update(n => Object.assign(Object.assign({}, n), {
     			pieces: n.pieces.map(piece => {
     				if (piece.id === n.activePiece) {
-    					console.log("ACTIVE PIECE DROPPED", n.activePiece);
-    					console.log({ squareId });
-    					return Object.assign(Object.assign({}, piece), { position: squareId });
+    					const legalSquareMovements = resolveMovement(piece.type, piece.position);
+
+    					if (legalSquareMovements.includes(squareId)) {
+    						return Object.assign(Object.assign({}, piece), { position: squareId });
+    					} else {
+    						console.log("ILLEGAL MOVE");
+    					}
     				}
 
     				return piece;
@@ -683,6 +726,7 @@ var app = (function () {
     	};
 
     	$$self.$capture_state = () => ({
+    		resolveMovement,
     		game,
     		rank,
     		file,

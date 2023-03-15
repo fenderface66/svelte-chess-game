@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolveMovement } from "./resolveMovement";
   import { game, Store } from "./stores";
   export let rank;
   export let file;
@@ -9,6 +10,10 @@
     activePiece: null,
     pieces: [],
   };
+
+  game.subscribe((value) => {
+    gameState = value;
+  });
 
   const backgroundColour =
     (((["a", "c", "e", "g"].includes(file) && rank % 2 !== 0) ||
@@ -30,12 +35,18 @@
       ...n,
       pieces: n.pieces.map((piece) => {
         if (piece.id === n.activePiece) {
-          console.log("ACTIVE PIECE DROPPED", n.activePiece);
-          console.log({ squareId });
-          return {
-            ...piece,
-            position: squareId,
-          };
+          const legalSquareMovements = resolveMovement(
+            piece.type,
+            piece.position
+          );
+          if (legalSquareMovements.includes(squareId)) {
+            return {
+              ...piece,
+              position: squareId,
+            };
+          } else {
+            console.log("ILLEGAL MOVE");
+          }
         }
         return piece;
       }),

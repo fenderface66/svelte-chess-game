@@ -22,17 +22,14 @@ describe('Chess game', () => {
     it('places the piece in the empty square it was dropped in', () => {
       render(App);
       const piece = screen.getByTestId('white-pawn-1');
-      const firstSquare = screen.getByText('a2');
+      const firstSquare = screen.getByText('a3');
       fireEvent.drag(piece)
       fireEvent.drop(firstSquare);
       const containingPieceSquare = piece.parentNode;
-      expect(containingPieceSquare.textContent).toBe("a2");
+      expect(containingPieceSquare.textContent).toBe("a3");
     })
     it('prevents players from placing pieces in illegal squares', () => {
-      console.log("hello");
       render(App);
-      console.log(screen.debug());
-      
       const piece = screen.getByTestId('white-pawn-1');
       const startButton = screen.getByTestId('start-button');
       const illegalSquare = screen.getByText('a5');
