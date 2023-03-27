@@ -516,16 +516,17 @@ var app = (function () {
         '7': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
         '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     };
-    const resolveMovement = (pieceType, currentSquare) => {
+    const resolveMovement = (pieceData) => {
+        const { type, position, color } = pieceData;
         const legalSquares = [];
-        const pieceMovement = pieceMovementMap[pieceType];
+        const pieceMovement = pieceMovementMap[type];
         if (!pieceMovement.order) ;
-        const [file, rank] = currentSquare.split('');
+        const [file, rank] = position.split('');
         pieceMovement.vertical.map(vDistance => {
-            const newRank = parseInt(rank) + vDistance;
+            const newRank = color === 'white' ? parseInt(rank) + vDistance : parseInt(rank) - vDistance;
             pieceMovement.horizontal.map(hDistance => {
                 const currentFileIndex = virtualBoard[newRank].indexOf(file);
-                const newFile = virtualBoard[newRank][currentFileIndex + hDistance];
+                const newFile = color === 'white' ? virtualBoard[newRank][currentFileIndex + hDistance] : virtualBoard[newRank][currentFileIndex - hDistance];
                 legalSquares.push(`${newFile}${newRank}`);
             });
         });
@@ -535,6 +536,54 @@ var app = (function () {
     const gameData = {
         activePiece: null,
         "pieces": [
+            {
+                id: 'white-rook-1',
+                color: 'white',
+                position: 'a1',
+                type: 'rook',
+            },
+            {
+                id: 'white-knight-1',
+                color: 'white',
+                position: 'b1',
+                type: 'knight',
+            },
+            {
+                id: 'white-bishop-1',
+                color: 'white',
+                position: 'c1',
+                type: 'knight',
+            },
+            {
+                id: 'white-queen',
+                color: 'white',
+                position: 'd1',
+                type: 'queen',
+            },
+            {
+                id: 'white-king',
+                color: 'white',
+                position: 'e1',
+                type: 'king',
+            },
+            {
+                id: 'white-bishop-2',
+                color: 'white',
+                position: 'f1',
+                type: 'bishop',
+            },
+            {
+                id: 'white-knight-2',
+                color: 'white',
+                position: 'g1',
+                type: 'knight',
+            },
+            {
+                id: 'white-rook-2',
+                color: 'white',
+                position: 'h1',
+                type: 'rook',
+            },
             {
                 id: 'white-pawn-1',
                 color: 'white',
@@ -582,6 +631,102 @@ var app = (function () {
                 color: 'white',
                 position: 'h2',
                 type: 'pawn',
+            },
+            {
+                id: 'black-rook-1',
+                color: 'black',
+                position: 'a8',
+                type: 'rook',
+            },
+            {
+                id: 'black-knight-1',
+                color: 'black',
+                position: 'b8',
+                type: 'knight',
+            },
+            {
+                id: 'black-bishop-1',
+                color: 'black',
+                position: 'c8',
+                type: 'knight',
+            },
+            {
+                id: 'black-queen',
+                color: 'black',
+                position: 'd8',
+                type: 'queen',
+            },
+            {
+                id: 'black-king',
+                color: 'black',
+                position: 'e8',
+                type: 'king',
+            },
+            {
+                id: 'black-bishop-2',
+                color: 'black',
+                position: 'f8',
+                type: 'bishop',
+            },
+            {
+                id: 'black-knight-2',
+                color: 'black',
+                position: 'g8',
+                type: 'knight',
+            },
+            {
+                id: 'black-rook-2',
+                color: 'black',
+                position: 'h8',
+                type: 'rook',
+            },
+            {
+                id: 'black-pawn-1',
+                color: 'black',
+                position: 'a7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-2',
+                color: 'black',
+                position: 'b7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-3',
+                color: 'black',
+                position: 'c7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-4',
+                color: 'black',
+                position: 'd7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-5',
+                color: 'black',
+                position: 'e7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-6',
+                color: 'black',
+                position: 'f7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-7',
+                color: 'black',
+                position: 'g7',
+                type: 'pawn',
+            },
+            {
+                id: 'black-pawn-8',
+                color: 'black',
+                position: 'h7',
+                type: 'pawn',
             }
         ]
     };
@@ -612,7 +757,7 @@ var app = (function () {
     			: "white square") + " svelte-1iwnem7"));
 
     			attr_dev(div, "ondragover", "return false");
-    			add_location(div, file_1, 40, 0, 1298);
+    			add_location(div, file_1, 40, 0, 1277);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -688,7 +833,7 @@ var app = (function () {
     		game.update(n => Object.assign(Object.assign({}, n), {
     			pieces: n.pieces.map(piece => {
     				if (piece.id === n.activePiece) {
-    					const legalSquareMovements = resolveMovement(piece.type, piece.position);
+    					const legalSquareMovements = resolveMovement(piece);
 
     					if (legalSquareMovements.includes(squareId)) {
     						return Object.assign(Object.assign({}, piece), { position: squareId });

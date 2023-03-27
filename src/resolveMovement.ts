@@ -1,4 +1,4 @@
-import type { Piece } from "./stores"
+import type { PieceData } from "./stores"
 
 
 type PieceMovementMap = {
@@ -34,18 +34,19 @@ const virtualBoard = {
     '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 }
 
-export const resolveMovement = (pieceType: Piece, currentSquare: string) => {
+export const resolveMovement = (pieceData: PieceData) => {
+    const { type, position, color } = pieceData
     const legalSquares = [];
-     const pieceMovement = pieceMovementMap[pieceType];
+     const pieceMovement = pieceMovementMap[type];
      if (!pieceMovement.order) {
-
+        
      }
-    const [file, rank] = currentSquare.split('');
+    const [file, rank] = position.split('');
     pieceMovement.vertical.map(vDistance => {
-        const newRank = parseInt(rank) + vDistance;
+        const newRank = color === 'white' ? parseInt(rank) + vDistance : parseInt(rank) - vDistance;
         pieceMovement.horizontal.map(hDistance => {
             const currentFileIndex = virtualBoard[newRank].indexOf(file);
-            const newFile = virtualBoard[newRank][currentFileIndex + hDistance];
+            const newFile = color === 'white' ? virtualBoard[newRank][currentFileIndex + hDistance] : virtualBoard[newRank][currentFileIndex - hDistance];
             legalSquares.push(`${newFile}${newRank}`)
         })
     })

@@ -1,6 +1,6 @@
 import { Writable, writable } from 'svelte/store';
 
-export type Piece = 'pawn'
+export type Piece = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king'
 
 export type PieceData = {
     id: string;
@@ -17,6 +17,54 @@ export type Store = {
 export const gameData: Store = {
     activePiece: null,
     "pieces": [
+        {
+            id: 'white-rook-1',
+            color: 'white',
+            position: 'a1',
+            type: 'rook',
+        },
+        {
+            id: 'white-knight-1',
+            color: 'white',
+            position: 'b1',
+            type: 'knight',
+        },
+        {
+            id: 'white-bishop-1',
+            color: 'white',
+            position: 'c1',
+            type: 'knight',
+        },
+        {
+            id: 'white-queen',
+            color: 'white',
+            position: 'd1',
+            type: 'queen',
+        },
+        {
+            id: 'white-king',
+            color: 'white',
+            position: 'e1',
+            type: 'king',
+        },
+        {
+            id: 'white-bishop-2',
+            color: 'white',
+            position: 'f1',
+            type: 'bishop',
+        },
+        {
+            id: 'white-knight-2',
+            color: 'white',
+            position: 'g1',
+            type: 'knight',
+        },
+        {
+            id: 'white-rook-2',
+            color: 'white',
+            position: 'h1',
+            type: 'rook',
+        },
         {
             id: 'white-pawn-1',
             color: 'white',
@@ -63,6 +111,102 @@ export const gameData: Store = {
             id: 'white-pawn-8',
             color: 'white',
             position: 'h2',
+            type: 'pawn',
+        },
+        {
+            id: 'black-rook-1',
+            color: 'black',
+            position: 'a8',
+            type: 'rook',
+        },
+        {
+            id: 'black-knight-1',
+            color: 'black',
+            position: 'b8',
+            type: 'knight',
+        },
+        {
+            id: 'black-bishop-1',
+            color: 'black',
+            position: 'c8',
+            type: 'knight',
+        },
+        {
+            id: 'black-queen',
+            color: 'black',
+            position: 'd8',
+            type: 'queen',
+        },
+        {
+            id: 'black-king',
+            color: 'black',
+            position: 'e8',
+            type: 'king',
+        },
+        {
+            id: 'black-bishop-2',
+            color: 'black',
+            position: 'f8',
+            type: 'bishop',
+        },
+        {
+            id: 'black-knight-2',
+            color: 'black',
+            position: 'g8',
+            type: 'knight',
+        },
+        {
+            id: 'black-rook-2',
+            color: 'black',
+            position: 'h8',
+            type: 'rook',
+        },
+        {
+            id: 'black-pawn-1',
+            color: 'black',
+            position: 'a7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-2',
+            color: 'black',
+            position: 'b7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-3',
+            color: 'black',
+            position: 'c7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-4',
+            color: 'black',
+            position: 'd7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-5',
+            color: 'black',
+            position: 'e7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-6',
+            color: 'black',
+            position: 'f7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-7',
+            color: 'black',
+            position: 'g7',
+            type: 'pawn',
+        },
+        {
+            id: 'black-pawn-8',
+            color: 'black',
+            position: 'h7',
             type: 'pawn',
         }
     ]
