@@ -501,8 +501,14 @@ var app = (function () {
     const pieceMovementMap = {
         pawn: {
             vertical: [1, 2],
-            horizontal: [0],
-            diagonal: [0],
+            horizontal: [],
+            diagonal: [],
+            order: null
+        },
+        bishop: {
+            vertical: [],
+            horizontal: [],
+            diagonal: [8],
             order: null
         }
     };
@@ -518,14 +524,31 @@ var app = (function () {
     };
     const resolveMovement = (pieceData) => {
         const { type, position, color } = pieceData;
+        const [positionFile, positionRow] = position.split('');
         const legalSquares = [];
         const pieceMovement = pieceMovementMap[type];
         if (!pieceMovement.order) ;
+        if (pieceMovement.diagonal.length) {
+            const positionFileIndex = virtualBoard[1].indexOf(positionFile);
+            Object.keys(virtualBoard).map(row => {
+                const rowInt = parseInt(row);
+                const verticalDiff = parseInt(positionRow) - rowInt;
+                virtualBoard[row].map((file, index) => {
+                    const horizontalDiff = positionFileIndex - index;
+                    if (Math.abs(verticalDiff) === Math.abs(horizontalDiff)) {
+                        legalSquares.push(`${file}${row}`);
+                    }
+                });
+            });
+        }
         const [file, rank] = position.split('');
         pieceMovement.vertical.map(vDistance => {
             const newRank = color === 'white' ? parseInt(rank) + vDistance : parseInt(rank) - vDistance;
+            const currentFileIndex = virtualBoard[newRank].indexOf(file);
+            if (!pieceMovement.horizontal.length) {
+                legalSquares.push(`${positionFile}${newRank}`);
+            }
             pieceMovement.horizontal.map(hDistance => {
-                const currentFileIndex = virtualBoard[newRank].indexOf(file);
                 const newFile = color === 'white' ? virtualBoard[newRank][currentFileIndex + hDistance] : virtualBoard[newRank][currentFileIndex - hDistance];
                 legalSquares.push(`${newFile}${newRank}`);
             });

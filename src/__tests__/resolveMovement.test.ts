@@ -30,7 +30,23 @@ describe('resolveMovement', () => {
             position: 'c8',
             id: 'black-bishop-1'
         });
-        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3']))
-        expect(legalBlackSquares).toEqual(expect.arrayContaining(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6']))
+        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6']))
+        expect(legalBlackSquares).toEqual(expect.arrayContaining(['b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3']))
+    })
+    it('will return the correct squares for non-linear moves', () => {
+        const legalWhiteSquares = resolveMovement({
+            type: 'knight',
+            color: 'white',
+            position: 'b1',
+            id: 'white-knight-1'
+        });
+        const legalBlackSquares = resolveMovement({
+            type: 'knight',
+            color: 'black',
+            position: 'b8',
+            id: 'black-knight-1'
+        });
+        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['a3', 'c3', 'd2']))
+        expect(legalBlackSquares).toEqual(expect.arrayContaining(['a6', 'c6', 'd7']))
     })
 })
