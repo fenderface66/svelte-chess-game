@@ -11,7 +11,10 @@ export type Movement = {
     vertical: number[],
     horizontal: number[],
     diagonal: number[],
-    order: null | Axis[], 
+    pattern?: {
+        vertical: number;
+        horizontal: number;
+    }[]
 }
 
 const pieceMovementMap: PieceMovementMap = {
@@ -19,13 +22,23 @@ const pieceMovementMap: PieceMovementMap = {
         vertical: [1, 2],
         horizontal: [],
         diagonal: [],
-        order: null
     },
     bishop: {
         vertical: [],
         horizontal: [],
         diagonal: [8],
-        order: null
+    },
+    knight: {
+        vertical: [],
+        horizontal: [],
+        diagonal: [],
+        pattern: [{
+            vertical: 1,
+            horizontal: 2,
+        }, {
+            vertical: 2,
+            horizontal: 1
+        }]
     }
 }
 
@@ -43,13 +56,32 @@ const virtualBoard = {
 export const resolveMovement = (pieceData: PieceData) => {
     const { type, position, color } = pieceData
     const [positionFile, positionRow] = position.split('');
+    const positionFileIndex = virtualBoard[1].indexOf(positionFile);
+    const positionRowNumber = parseInt(positionRow);
     const legalSquares = [];
     const pieceMovement = pieceMovementMap[type];
-    if (!pieceMovement.order) {
-    
+    if (!!pieceMovement.pattern) {
+        pieceMovement.pattern.map((pattern) => {
+            const increasedFileIndex = positionFileIndex + pattern.horizontal;
+            const increasedNewFile = virtualBoard[1][increasedFileIndex];
+            const decreasedFileIndex = positionFileIndex - pattern.horizontal;
+            const decreasedNewFile = virtualBoard[1][decreasedFileIndex];
+            const increasedRow = positionRowNumber + pattern.vertical;
+            const decreasedRow = positionRowNumber - pattern.vertical;
+            const resolvedPatternPositions = [
+                `${increasedNewFile}${increasedRow}`,
+                `${increasedNewFile}${decreasedRow}`,
+                `${decreasedNewFile}${increasedRow}`,
+                `${decreasedNewFile}${decreasedRow}`
+            ].filter((resolvedPatternPosition) => {
+                if (resolvedPatternPosition.includes('-') || resolvedPatternPosition.includes('undefined') || resolvedPatternPosition.includes('0')) {
+                    return false;
+                } return true;
+            })
+            legalSquares.push(...resolvedPatternPositions)
+        })
     }
     if (pieceMovement.diagonal.length) {
-        const positionFileIndex = virtualBoard[1].indexOf(positionFile);
         Object.keys(virtualBoard).map(row => {
             const rowInt = parseInt(row);
             const verticalDiff = parseInt(positionRow) - rowInt;
