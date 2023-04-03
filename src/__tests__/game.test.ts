@@ -40,7 +40,4 @@ describe('Chess game', () => {
       expect(containingPieceSquare.textContent).toBe("a2");
     })
   })
-  describe('capturing pieces', () => {
-    
-  })
 })

@@ -1,4 +1,4 @@
-import type { PieceData } from "./stores"
+import type { PieceData, Store } from "./stores"
 
 
 type PieceMovementMap = {
@@ -53,7 +53,7 @@ const virtualBoard = {
     '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 }
 
-export const resolveMovement = (pieceData: PieceData) => {
+export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
     const { type, position, color } = pieceData
     const [positionFile, positionRow] = position.split('');
     const positionFileIndex = virtualBoard[1].indexOf(positionFile);
@@ -105,5 +105,23 @@ export const resolveMovement = (pieceData: PieceData) => {
             legalSquares.push(`${newFile}${newRank}`)
         })
     })
+    if (pieceData.type === 'pawn') {
+        console.log(parseInt(positionRow) + 1);
+        const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) + 1}`];
+        const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) - 1}`];
+        const captureZones = color === 'white' ? whiteCaptureZones : blackCaptureZones;
+        const catchablePieces = gameState.pieces.filter(piece => {
+            if (piece.id === 'h3') {
+                console.log(blackCaptureZones);
+                console.log({captureZones});
+                console.log(piece.position);
+            }
+            if (captureZones.includes(piece.position)) {
+                return true
+            }
+            return false;
+        }).map(gameStatePiece => gameStatePiece.position)
+        console.log(catchablePieces);
+    }
     return legalSquares;
 }

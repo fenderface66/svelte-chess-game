@@ -35,7 +35,7 @@
       ...n,
       pieces: n.pieces.map((piece) => {
         if (piece.id === n.activePiece) {
-          const legalSquareMovements = resolveMovement(piece);
+          const legalSquareMovements = resolveMovement(piece, gameState);
           if (legalSquareMovements.includes(squareId)) {
             return {
               ...piece,
