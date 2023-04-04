@@ -106,22 +106,16 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
         })
     })
     if (pieceData.type === 'pawn') {
-        console.log(parseInt(positionRow) + 1);
         const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) + 1}`];
         const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) - 1}`];
         const captureZones = color === 'white' ? whiteCaptureZones : blackCaptureZones;
         const catchablePieces = gameState.pieces.filter(piece => {
-            if (piece.id === 'h3') {
-                console.log(blackCaptureZones);
-                console.log({captureZones});
-                console.log(piece.position);
-            }
             if (captureZones.includes(piece.position)) {
                 return true
             }
             return false;
         }).map(gameStatePiece => gameStatePiece.position)
-        console.log(catchablePieces);
+        legalSquares.push(...catchablePieces);
     }
     return legalSquares;
 }
