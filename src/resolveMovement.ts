@@ -55,9 +55,9 @@ const virtualBoard = {
 
 export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
     const { type, position, color } = pieceData
-    const [positionFile, positionRow] = position.split('');
+    const [positionFile, positionRank] = position.split('');
     const positionFileIndex = virtualBoard[1].indexOf(positionFile);
-    const positionRowNumber = parseInt(positionRow);
+    const positionRowNumber = parseInt(positionRank);
     const legalSquares = [];
     const pieceMovement = pieceMovementMap[type];
     if (!!pieceMovement.pattern) {
@@ -84,7 +84,7 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
     if (pieceMovement.diagonal.length) {
         Object.keys(virtualBoard).map(row => {
             const rowInt = parseInt(row);
-            const verticalDiff = parseInt(positionRow) - rowInt;
+            const verticalDiff = parseInt(positionRank) - rowInt;
             virtualBoard[row].map((file, index) => {
                 const horizontalDiff = positionFileIndex - index;
                 if (Math.abs(verticalDiff) === Math.abs(horizontalDiff)) {
@@ -93,10 +93,9 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             })
         })
     }
-    const [file, rank] = position.split('');
     pieceMovement.vertical.map(vDistance => {
-        const newRank = color === 'white' ? parseInt(rank) + vDistance : parseInt(rank) - vDistance;
-        const currentFileIndex = virtualBoard[newRank].indexOf(file);
+        const newRank = color === 'white' ? parseInt(positionRank) + vDistance : parseInt(positionRank) - vDistance;
+        const currentFileIndex = virtualBoard[newRank].indexOf(positionFile);
         if (!pieceMovement.horizontal.length) {
             legalSquares.push(`${positionFile}${newRank}`)
         }
@@ -106,8 +105,8 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
         })
     })
     if (pieceData.type === 'pawn') {
-        const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) + 1}`];
-        const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRow) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRow) - 1}`];
+        const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) + 1}`];
+        const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) - 1}`];
         const captureZones = color === 'white' ? whiteCaptureZones : blackCaptureZones;
         const catchablePieces = gameState.pieces.filter(piece => {
             if (captureZones.includes(piece.position)) {
