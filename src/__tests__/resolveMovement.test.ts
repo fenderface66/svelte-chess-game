@@ -20,7 +20,7 @@ const testStore = {
             id: 'white-bishop-1',
             color: 'white',
             position: 'c1',
-            type: 'knight',
+            type: 'bishop',
         },
         {
             id: 'white-queen',
@@ -116,7 +116,7 @@ const testStore = {
             id: 'black-bishop-1',
             color: 'black',
             position: 'c8',
-            type: 'knight',
+            type: 'bishop',
         },
         {
             id: 'black-queen',

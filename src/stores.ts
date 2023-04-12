@@ -33,7 +33,7 @@ export const gameData: Store = {
             id: 'white-bishop-1',
             color: 'white',
             position: 'c1',
-            type: 'knight',
+            type: 'bishop',
         },
         {
             id: 'white-queen',
@@ -129,7 +129,7 @@ export const gameData: Store = {
             id: 'black-bishop-1',
             color: 'black',
             position: 'c8',
-            type: 'knight',
+            type: 'bishop',
         },
         {
             id: 'black-queen',

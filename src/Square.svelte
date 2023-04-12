@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { identifyPath } from "./identifyPath";
   import { resolveMovement } from "./resolveMovement";
   import { game, Store } from "./stores";
   export let rank;
@@ -29,13 +30,20 @@
     console.log(`Leaving Square ${squareId}`);
   };
 
+  const handleDrag = (e) => {
+    console.log("DRAGGIN");
+  };
+
   const handleDragDrop = (e) => {
     e.preventDefault();
     game.update((n) => ({
       ...n,
       pieces: n.pieces.map((piece) => {
         if (piece.id === n.activePiece) {
+          const path = identifyPath(piece.position, squareId);
+          console.log({ path });
           const legalSquareMovements = resolveMovement(piece, gameState);
+          console.log(legalSquareMovements);
           if (legalSquareMovements.includes(squareId)) {
             return {
               ...piece,
