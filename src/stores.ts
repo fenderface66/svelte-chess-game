@@ -10,7 +10,10 @@ export type PieceData = {
 }
 
 export type Store = {
-    activePiece: null | string;
+    activePiece: {
+        id: string,
+        paths: string[][],
+    };
     pieces: PieceData[],
 }
 

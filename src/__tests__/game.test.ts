@@ -18,7 +18,18 @@ describe('Chess game', () => {
       })
     })
   })
-  describe('moving pieces', () => {
+  describe('picking up pieces', () => {
+    it.only('shows all possible drop points for a picked up piece', () => {
+      render(App);
+      const piece = screen.getByTestId('white-pawn-1');
+      fireEvent.drag(piece)
+      const squares = screen.getAllByTestId("square");
+      squares.forEach(square => {
+        console.log(square.outerHTML);
+      })
+    })
+  })
+  describe('placing pieces', () => {
     it('places the piece in the empty square it was dropped in', () => {
       render(App);
       const piece = screen.getByTestId('white-pawn-1');

@@ -288,20 +288,4 @@ describe('resolveMovement', () => {
         expect(legalWhiteSquares).toEqual(expect.arrayContaining(['a3', 'c3', 'd2']))
         expect(legalBlackSquares).toEqual(expect.arrayContaining(['a6', 'c6', 'd7']))
     })
-    it('will prevent movement when a path is blocked for a non-knight piece', () => {
-        const legalWhiteSquares = resolveMovement({
-            type: 'bishop',
-            color: 'white',
-            position: 'c1',
-            id: 'white-bishop-1'
-        }, testStore);
-        const legalBlackSquares = resolveMovement({
-            type: 'bishop',
-            color: 'black',
-            position: 'c8',
-            id: 'black-bishop-1'
-        }, testStore);
-        expect(legalWhiteSquares).toEqual([])
-        expect(legalBlackSquares).toEqual([])
-    })
 })

@@ -39,12 +39,14 @@
     game.update((n) => ({
       ...n,
       pieces: n.pieces.map((piece) => {
-        if (piece.id === n.activePiece) {
-          const path = identifyPath(piece.position, squareId);
-          console.log({ path });
-          const legalSquareMovements = resolveMovement(piece, gameState);
-          console.log(legalSquareMovements);
-          if (legalSquareMovements.includes(squareId)) {
+        if (piece.id === n.activePiece.id) {
+          let currentSquareIsLegal = false;
+          n.activePiece.paths.forEach((path) => {
+            if (path.includes(squareId)) {
+              currentSquareIsLegal = true;
+            }
+          });
+          if (currentSquareIsLegal) {
             return {
               ...piece,
               position: squareId,
@@ -67,6 +69,7 @@
   on:dragleave={handleDragLeave}
   ondragover="return false"
   on:drop={handleDragDrop}
+  data-testid="square"
 >
   {file}{rank}
 </div>

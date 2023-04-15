@@ -17,7 +17,7 @@
     gameState = value;
     if (!!gameState.activePiece) {
       const activePieceData = gameState.pieces.find(
-        (piece) => piece.id === gameState.activePiece
+        (piece) => piece.id === gameState.activePiece.id
       );
       const activePieceElement = document.querySelector(
         `#${activePieceData.id}`

@@ -21,6 +21,7 @@
     const pieceData = gameState.pieces.find((piece) => piece.id === id);
     const legalSquareMovements = resolveMovement(pieceData, gameState);
     const endpoints = identifyEndpoints(legalSquareMovements);
+    console.log({ endpoints });
     const paths = endpoints.map((movement) => {
       return identifyPath(pieceData.position, movement);
     });
@@ -29,13 +30,16 @@
       let pathBlocked = false;
       return path
         .map((square) => {
+          console.log("CHECKING SQUARE", square);
           if (!!pathBlocked) {
+            console.log("PATH IS BLOCKED");
             return false;
           }
           const squareIsOccupied = gameState.pieces.find(
-            (piece) => piece.position === square
+            (piece) => piece.position === square && piece.id !== pieceData.id
           );
           if (!!squareIsOccupied) {
+            console.log("SQUARE IS OCCUPIED");
             pathBlocked = true;
           }
           return square;
@@ -45,7 +49,10 @@
     console.log({ interceptedPaths });
     game.update((n) => ({
       ...n,
-      activePiece: id,
+      activePiece: {
+        id,
+        paths: interceptedPaths,
+      },
     }));
   };
 </script>
