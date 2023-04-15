@@ -21,32 +21,26 @@
     const pieceData = gameState.pieces.find((piece) => piece.id === id);
     const legalSquareMovements = resolveMovement(pieceData, gameState);
     const endpoints = identifyEndpoints(legalSquareMovements);
-    console.log({ endpoints });
     const paths = endpoints.map((movement) => {
       return identifyPath(pieceData.position, movement);
     });
-    console.log({ paths });
     const interceptedPaths = paths.map((path) => {
       let pathBlocked = false;
       return path
         .map((square) => {
-          console.log("CHECKING SQUARE", square);
           if (!!pathBlocked) {
-            console.log("PATH IS BLOCKED");
             return false;
           }
           const squareIsOccupied = gameState.pieces.find(
             (piece) => piece.position === square && piece.id !== pieceData.id
           );
           if (!!squareIsOccupied) {
-            console.log("SQUARE IS OCCUPIED");
             pathBlocked = true;
           }
           return square;
         })
         .filter((x) => x);
     });
-    console.log({ interceptedPaths });
     game.update((n) => ({
       ...n,
       activePiece: {

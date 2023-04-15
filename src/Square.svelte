@@ -7,6 +7,8 @@
 
   const squareId = `${file}${rank}`;
 
+  let hasMarker = false;
+
   let gameState: Store = {
     activePiece: null,
     pieces: [],
@@ -14,6 +16,9 @@
 
   game.subscribe((value) => {
     gameState = value;
+    if (!!gameState.activePiece) {
+      hasMarker = [...gameState.activePiece.paths].flat().includes(squareId);
+    }
   });
 
   const backgroundColour =
@@ -36,6 +41,7 @@
 
   const handleDragDrop = (e) => {
     e.preventDefault();
+
     game.update((n) => ({
       ...n,
       pieces: n.pieces.map((piece) => {
@@ -72,6 +78,9 @@
   data-testid="square"
 >
   {file}{rank}
+  {#if hasMarker}
+    <div data-testid="marker" class="marker" />
+  {/if}
 </div>
 
 <style>
@@ -87,5 +96,12 @@
 
   .white {
     background-color: white;
+  }
+
+  .marker {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
   }
 </style>

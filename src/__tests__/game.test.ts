@@ -23,10 +23,10 @@ describe('Chess game', () => {
       render(App);
       const piece = screen.getByTestId('white-pawn-1');
       fireEvent.drag(piece)
-      const squares = screen.getAllByTestId("square");
-      squares.forEach(square => {
-        console.log(square.outerHTML);
-      })
+      const markers = screen.getAllByTestId("marker");
+      const markerSquares = markers.map(marker => marker.parentElement);
+      const squareIds = markerSquares.map(square => square.textContent);
+      expect(squareIds).toEqual(expect.arrayContaining(['a3', 'a4']));
     })
   })
   describe('placing pieces', () => {
