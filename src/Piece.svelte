@@ -20,7 +20,7 @@
   const onDragPiece = (e) => {
     const pieceData = gameState.pieces.find((piece) => piece.id === id);
     const legalSquareMovements = resolveMovement(pieceData, gameState);
-    const endpoints = identifyEndpoints(legalSquareMovements);
+    const endpoints = identifyEndpoints(pieceData.type, legalSquareMovements);
     const paths = endpoints.map((movement) => {
       return identifyPath(pieceData.position, movement);
     });

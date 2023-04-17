@@ -1,4 +1,4 @@
-import { pieceMovementMap, virtualBoard } from "./boardUtils";
+import { pieceMovementMap, virtualBoard, files } from "./boardUtils";
 import type { PieceData, Store } from "./stores"
 
 
@@ -30,7 +30,7 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             legalSquares.push(...resolvedPatternPositions)
         })
     }
-    if (pieceMovement.diagonal.length) {
+    if (!!pieceMovement.diagonal) {
         Object.keys(virtualBoard).map(row => {
             const rowInt = parseInt(row);
             const verticalDiff = parseInt(positionRank) - rowInt;
@@ -42,17 +42,15 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             })
         })
     }
-    pieceMovement.vertical.map(vDistance => {
-        const newRank = color === 'white' ? parseInt(positionRank) + vDistance : parseInt(positionRank) - vDistance;
-        const currentFileIndex = virtualBoard[newRank].indexOf(positionFile);
-        if (!pieceMovement.horizontal.length) {
-            legalSquares.push(`${positionFile}${newRank}`)
-        }
-        pieceMovement.horizontal.map(hDistance => {
-            const newFile = color === 'white' ? virtualBoard[newRank][currentFileIndex + hDistance] : virtualBoard[newRank][currentFileIndex - hDistance];
-            legalSquares.push(`${newFile}${newRank}`)
-        })
-    })
+    
+    for (let x = 0; x <= pieceMovement.vertical; x++) {
+        legalSquares.push(`${positionFile}${color === 'white' ? parseInt(positionRank) + x : parseInt(positionRank)- x}`)
+    } 
+
+    for (let x = 0; x <= pieceMovement.horizontal; x++) {
+        legalSquares.push(`${files[positionFileIndex + x]}${positionRank}`);
+        legalSquares.push(`${files[positionFileIndex - x]}${positionRank}`)
+    } 
     if (pieceData.type === 'pawn') {
         const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) + 1}`];
         const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) - 1}`];

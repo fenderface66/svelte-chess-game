@@ -2,7 +2,7 @@ import { identifyEndpoints } from "../identifyEndpoints";
 
 describe("identifyEndpoints", () => {
     it('returns only the final squares of a pieces possible trajectories', () => {
-        const endpoints = identifyEndpoints([
+        const endpoints = identifyEndpoints('bishop', [
             "c1",
             "d2",
             "h2",

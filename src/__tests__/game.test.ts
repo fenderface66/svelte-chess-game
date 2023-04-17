@@ -14,19 +14,20 @@ describe('Chess game', () => {
       gameData.pieces.map(piece => {
         const pieceElement = screen.getByTestId(piece.id);
         const containingPieceSquare = pieceElement.parentNode;
-        expect(containingPieceSquare.textContent).toBe(piece.position);
+        expect(containingPieceSquare.textContent.trim()).toBe(piece.position);
       })
     })
   })
   describe('picking up pieces', () => {
-    it.only('shows all possible drop points for a picked up piece', () => {
+    it('shows all possible drop points for a picked up piece', async () => {
       render(App);
       const piece = screen.getByTestId('white-pawn-1');
-      fireEvent.drag(piece)
+      await fireEvent.drag(piece)
+      const firstSquare = screen.getByText('a3');
       const markers = screen.getAllByTestId("marker");
       const markerSquares = markers.map(marker => marker.parentElement);
-      const squareIds = markerSquares.map(square => square.textContent);
-      expect(squareIds).toEqual(expect.arrayContaining(['a3', 'a4']));
+      const squareIds = markerSquares.map(square => square.textContent.trim());
+      expect(squareIds).toEqual(expect.arrayContaining(['a2','a3', 'a4']));
     })
   })
   describe('placing pieces', () => {
@@ -37,7 +38,7 @@ describe('Chess game', () => {
       fireEvent.drag(piece)
       fireEvent.drop(firstSquare);
       const containingPieceSquare = piece.parentNode;
-      expect(containingPieceSquare.textContent).toBe("a3");
+      expect(containingPieceSquare.textContent.trim()).toBe("a3");
     })
     it('prevents players from placing pieces in illegal squares', () => {
       render(App);
@@ -48,7 +49,7 @@ describe('Chess game', () => {
       fireEvent.drag(piece)
       fireEvent.drop(illegalSquare);
       const containingPieceSquare = piece.parentNode;
-      expect(containingPieceSquare.textContent).toBe("a2");
+      expect(containingPieceSquare.textContent.trim()).toBe("a2");
     })
   })
 })

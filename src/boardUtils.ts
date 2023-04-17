@@ -5,30 +5,33 @@ type PieceMovementMap = {
 export type Axis = 'vertical' | 'horizontal' | 'diagonal'
 
 export type Movement = {
-    vertical: number[],
-    horizontal: number[],
-    diagonal: number[],
+    vertical: number | null,
+    horizontal: number | null,
+    diagonal: number | null,
     pattern?: {
         vertical: number;
         horizontal: number;
     }[]
 }
 
+export const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g','h'];
+export const ranks = ['1', '2', '3', '4', '5', '6', '7', '8']
+
 export const pieceMovementMap: PieceMovementMap = {
     pawn: {
-        vertical: [1, 2],
-        horizontal: [],
-        diagonal: [],
+        vertical: 2,
+        horizontal: null,
+        diagonal: null,
     },
     bishop: {
-        vertical: [],
-        horizontal: [],
-        diagonal: [8],
+        vertical: null,
+        horizontal: null,
+        diagonal: 8,
     },
     knight: {
-        vertical: [],
-        horizontal: [],
-        diagonal: [],
+        vertical: null,
+        horizontal: null,
+        diagonal: null,
         pattern: [{
             vertical: 1,
             horizontal: 2,
@@ -36,6 +39,21 @@ export const pieceMovementMap: PieceMovementMap = {
             vertical: 2,
             horizontal: 1
         }]
+    },
+    rook: {
+        vertical: 8,
+        horizontal: null,
+        diagonal: null,
+    },
+    queen: {
+        vertical: 8,
+        horizontal: 8,
+        diagonal: 8,
+    },
+    king: {
+        vertical: 1,
+        horizontal: 1,
+        diagonal: 1,
     }
 }
 
