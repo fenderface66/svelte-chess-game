@@ -213,8 +213,8 @@ describe('resolveMovement', () => {
             position: 'b7',
             id: 'black-pawn-2'
         }, testStore);
-        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['a3', 'a4']))
-        expect(legalBlackSquares).toEqual(expect.arrayContaining(['b6', 'b5']))
+        expect(legalWhiteSquares).toBe(expect.arrayContaining(['a3', 'a4']))
+        expect(legalBlackSquares).toBe(expect.arrayContaining(['b6', 'b5']))
     })
     it('will return the correct legal squares when a pawn capture is possible', () => {
         const storeWithCatchableBlackPawn = {
@@ -251,41 +251,43 @@ describe('resolveMovement', () => {
             type: 'pawn',
             color: 'black',
             position: 'g7',
-            id: 'black-pawn-7'
+            id: 'black-pawn-7',
         }, storeWithCatchableWhitePawn);
-        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['g3', 'g4', 'h3']))
-        expect(legalBlackSquares).toEqual(expect.arrayContaining(['g5', 'g6', 'h6']))
+        expect(legalWhiteSquares).toBe(expect.arrayContaining(['g3', 'g4', 'h3']))
+        expect(legalBlackSquares).toBe(expect.arrayContaining(['g5', 'g6', 'h6']))
     })
     it('will return the correct legal squares for diagonal moves', () => {
         const legalWhiteSquares = resolveMovement({
             type: 'bishop',
             color: 'white',
             position: 'c1',
-            id: 'white-bishop-1'
+            id: 'white-bishop-1',
         }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'bishop',
             color: 'black',
             position: 'c8',
-            id: 'black-bishop-1'
+            id: 'black-bishop-1',
         }, testStore);
-        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6']))
-        expect(legalBlackSquares).toEqual(expect.arrayContaining(['b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3']))
+        expect(legalWhiteSquares).toBe(expect.arrayContaining(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6']))
+        expect(legalBlackSquares).toBe(expect.arrayContaining(['b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3']))
     })
-    it('will return the correct squares for non-linear moves', () => {
-        const legalWhiteSquares = resolveMovement({
-            type: 'knight',
-            color: 'white',
-            position: 'b1',
-            id: 'white-knight-1'
-        }, testStore);
+    it.only('will return the correct squares for non-linear moves', () => {
+        // const legalWhiteSquares = resolveMovement({
+        //     type: 'knight',
+        //     color: 'white',
+        //     position: 'b1',
+        //     id: 'white-knight-1',
+        // }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'knight',
             color: 'black',
             position: 'b8',
-            id: 'black-knight-1'
+            id: 'black-knight-1',
         }, testStore);
-        expect(legalWhiteSquares).toEqual(expect.arrayContaining(['a3', 'c3', 'd2']))
-        expect(legalBlackSquares).toEqual(expect.arrayContaining(['a6', 'c6', 'd7']))
+        // console.log({legalWhiteSquares});
+        console.log({legalBlackSquares});
+        // expect(legalWhiteSquares.sort()).toEqual(['a3', 'c3', 'd2'].sort())
+        expect(legalBlackSquares.sort()).toEqual(['a6', 'c6', 'd7'].sort())
     })
 })

@@ -24,23 +24,27 @@
     const paths = endpoints.map((movement) => {
       return identifyPath(pieceData.position, movement);
     });
-    const interceptedPaths = paths.map((path) => {
-      let pathBlocked = false;
-      return path
-        .map((square) => {
-          if (!!pathBlocked) {
-            return false;
-          }
-          const squareIsOccupied = gameState.pieces.find(
-            (piece) => piece.position === square && piece.id !== pieceData.id
-          );
-          if (!!squareIsOccupied) {
-            pathBlocked = true;
-          }
-          return square;
-        })
-        .filter((x) => x);
-    });
+    const interceptedPaths =
+      pieceData.type === "knight"
+        ? paths
+        : paths.map((path) => {
+            let pathBlocked = false;
+            return path
+              .map((square) => {
+                if (!!pathBlocked) {
+                  return false;
+                }
+                const squareIsOccupied = gameState.pieces.find(
+                  (piece) =>
+                    piece.position === square && piece.id !== pieceData.id
+                );
+                if (!!squareIsOccupied) {
+                  pathBlocked = true;
+                }
+                return square;
+              })
+              .filter((x) => x);
+          });
     game.update((n) => ({
       ...n,
       activePiece: {

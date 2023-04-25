@@ -29,6 +29,7 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             })
             legalSquares.push(...resolvedPatternPositions)
         })
+        console.log({legalSquares});
     }
     if (!!pieceMovement.diagonal) {
         Object.keys(virtualBoard).map(row => {
@@ -42,15 +43,20 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             })
         })
     }
-    
-    for (let x = 0; x <= pieceMovement.vertical; x++) {
-        legalSquares.push(`${positionFile}${color === 'white' ? parseInt(positionRank) + x : parseInt(positionRank)- x}`)
-    } 
 
-    for (let x = 0; x <= pieceMovement.horizontal; x++) {
-        legalSquares.push(`${files[positionFileIndex + x]}${positionRank}`);
-        legalSquares.push(`${files[positionFileIndex - x]}${positionRank}`)
-    } 
+    if (pieceMovement.vertical > 0) {
+        for (let x = 0; x <= pieceMovement.vertical; x++) {
+            legalSquares.push(`${positionFile}${color === 'white' ? parseInt(positionRank) + x : parseInt(positionRank)- x}`)
+        } 
+    }
+
+    if (pieceMovement.horizontal > 0) {
+        for (let x = 0; x <= pieceMovement.horizontal; x++) {
+            legalSquares.push(`${files[positionFileIndex + x]}${positionRank}`);
+            legalSquares.push(`${files[positionFileIndex - x]}${positionRank}`)
+        } 
+    }
+    
     if (pieceData.type === 'pawn') {
         const whiteCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) + 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) + 1}`];
         const blackCaptureZones = [`${virtualBoard['1'][positionFileIndex - 1]}${parseInt(positionRank) - 1}`, `${virtualBoard['1'][positionFileIndex + 1]}${parseInt(positionRank) - 1}`];
