@@ -21,9 +21,12 @@
     const pieceData = gameState.pieces.find((piece) => piece.id === id);
     const legalSquareMovements = resolveMovement(pieceData, gameState);
     const endpoints = identifyEndpoints(pieceData.type, legalSquareMovements);
-    const paths = endpoints.map((movement) => {
-      return identifyPath(pieceData.position, movement);
-    });
+    const paths =
+      pieceData.type === "knight"
+        ? legalSquareMovements
+        : endpoints.map((movement) => {
+            return identifyPath(pieceData.position, movement);
+          });
     const interceptedPaths =
       pieceData.type === "knight"
         ? paths
@@ -49,7 +52,7 @@
       ...n,
       activePiece: {
         id,
-        paths: interceptedPaths,
+        legalSquares: interceptedPaths.flat(),
       },
     }));
   };

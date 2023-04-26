@@ -17,7 +17,7 @@
   game.subscribe((value) => {
     gameState = value;
     if (!!gameState.activePiece) {
-      hasMarker = [...gameState.activePiece.paths].flat().includes(squareId);
+      hasMarker = [...gameState.activePiece.legalSquares].includes(squareId);
     }
   });
 
@@ -47,7 +47,7 @@
       pieces: n.pieces.map((piece) => {
         if (piece.id === n.activePiece.id) {
           let currentSquareIsLegal = false;
-          n.activePiece.paths.forEach((path) => {
+          n.activePiece.legalSquares.forEach((path) => {
             if (path.includes(squareId)) {
               currentSquareIsLegal = true;
             }

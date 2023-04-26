@@ -12,7 +12,7 @@ export type PieceData = {
 export type Store = {
     activePiece: {
         id: string,
-        paths: string[][],
+        legalSquares: string[],
     };
     pieces: PieceData[],
 }
