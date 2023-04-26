@@ -213,8 +213,8 @@ describe('resolveMovement', () => {
             position: 'b7',
             id: 'black-pawn-2'
         }, testStore);
-        expect(legalWhiteSquares).toBe(expect.arrayContaining(['a3', 'a4']))
-        expect(legalBlackSquares).toBe(expect.arrayContaining(['b6', 'b5']))
+        expect(legalWhiteSquares.sort()).toEqual(['a2', 'a3', 'a4'].sort())
+        expect(legalBlackSquares.sort()).toEqual(['b7','b6', 'b5'].sort())
     })
     it('will return the correct legal squares when a pawn capture is possible', () => {
         const storeWithCatchableBlackPawn = {
@@ -253,8 +253,8 @@ describe('resolveMovement', () => {
             position: 'g7',
             id: 'black-pawn-7',
         }, storeWithCatchableWhitePawn);
-        expect(legalWhiteSquares).toBe(expect.arrayContaining(['g3', 'g4', 'h3']))
-        expect(legalBlackSquares).toBe(expect.arrayContaining(['g5', 'g6', 'h6']))
+        expect(legalWhiteSquares.sort()).toEqual(['g2','g3', 'g4', 'h3'].sort());
+        expect(legalBlackSquares.sort()).toEqual(['g7','g5', 'g6', 'h6'].sort());
     })
     it('will return the correct legal squares for diagonal moves', () => {
         const legalWhiteSquares = resolveMovement({
@@ -269,25 +269,23 @@ describe('resolveMovement', () => {
             position: 'c8',
             id: 'black-bishop-1',
         }, testStore);
-        expect(legalWhiteSquares).toBe(expect.arrayContaining(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6']))
-        expect(legalBlackSquares).toBe(expect.arrayContaining(['b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3']))
+        expect(legalWhiteSquares.sort()).toEqual(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6'].sort())
+        expect(legalBlackSquares.sort()).toEqual(['c8', 'b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3'].sort())
     })
-    it.only('will return the correct squares for non-linear moves', () => {
-        // const legalWhiteSquares = resolveMovement({
-        //     type: 'knight',
-        //     color: 'white',
-        //     position: 'b1',
-        //     id: 'white-knight-1',
-        // }, testStore);
+    it('will return the correct squares for non-linear moves', () => {
+        const legalWhiteSquares = resolveMovement({
+            type: 'knight',
+            color: 'white',
+            position: 'b1',
+            id: 'white-knight-1',
+        }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'knight',
             color: 'black',
             position: 'b8',
             id: 'black-knight-1',
         }, testStore);
-        // console.log({legalWhiteSquares});
-        console.log({legalBlackSquares});
-        // expect(legalWhiteSquares.sort()).toEqual(['a3', 'c3', 'd2'].sort())
+        expect(legalWhiteSquares.sort()).toEqual(['a3', 'c3', 'd2'].sort())
         expect(legalBlackSquares.sort()).toEqual(['a6', 'c6', 'd7'].sort())
     })
 })

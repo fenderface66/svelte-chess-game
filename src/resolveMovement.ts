@@ -1,35 +1,24 @@
-import { pieceMovementMap, virtualBoard, files } from "./boardUtils";
+import { pieceMovementMap, virtualBoard, files, ranks } from "./boardUtils";
 import type { PieceData, Store } from "./stores"
 
 
 export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
     const { type, position, color } = pieceData
     const [positionFile, positionRank] = position.split('');
-    const positionFileIndex = virtualBoard[1].indexOf(positionFile);
-    const positionRowNumber = parseInt(positionRank);
+    const positionFileIndex = files.indexOf(positionFile);
+    const positionRankIndex = ranks.indexOf(positionRank);
     const legalSquares = [];
     const pieceMovement = pieceMovementMap[type];
     if (!!pieceMovement.pattern) {
         pieceMovement.pattern.map((pattern) => {
-            const increasedFileIndex = positionFileIndex + pattern.horizontal;
-            const increasedNewFile = virtualBoard[1][increasedFileIndex];
-            const decreasedFileIndex = positionFileIndex - pattern.horizontal;
-            const decreasedNewFile = virtualBoard[1][decreasedFileIndex];
-            const increasedRow = positionRowNumber + pattern.vertical;
-            const decreasedRow = positionRowNumber - pattern.vertical;
-            const resolvedPatternPositions = [
-                `${increasedNewFile}${increasedRow}`,
-                `${increasedNewFile}${decreasedRow}`,
-                `${decreasedNewFile}${increasedRow}`,
-                `${decreasedNewFile}${decreasedRow}`
-            ].filter((resolvedPatternPosition) => {
-                if (resolvedPatternPosition.includes('-') || resolvedPatternPosition.includes('undefined') || resolvedPatternPosition.includes('0')) {
-                    return false;
-                } return true;
-            })
-            legalSquares.push(...resolvedPatternPositions)
+            const patternMoves = [];
+            const patternRanks = [ranks[positionRankIndex - pattern.vertical], ranks[positionRankIndex + pattern.vertical]];
+            const patternFiles = [files[positionFileIndex - pattern.horizontal], files[positionFileIndex + pattern.horizontal]];
+            patternFiles.forEach((file) => {
+                patternMoves.push(`${file}${patternRanks[0]}`, `${file}${patternRanks[1]}`);
+            });
+            legalSquares.push(...patternMoves.filter(x => !x.includes('undefined')));
         })
-        console.log({legalSquares});
     }
     if (!!pieceMovement.diagonal) {
         Object.keys(virtualBoard).map(row => {
