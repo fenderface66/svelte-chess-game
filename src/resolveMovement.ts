@@ -56,6 +56,10 @@ export const resolveMovement = (pieceData: PieceData, gameState: Store) => {
             }
             return false;
         }).map(gameStatePiece => gameStatePiece.position)
+        if (!pieceData.moved) {
+            const newRank = pieceData.color === 'white' ? positionRankIndex + 2 : positionRankIndex - 2;
+            legalSquares.push(`${files[positionFileIndex]}${ranks[newRank]}`)
+        }
         legalSquares.push(...catchablePieces);
     }
     return legalSquares;

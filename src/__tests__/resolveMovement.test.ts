@@ -204,17 +204,37 @@ describe('resolveMovement', () => {
         const legalWhiteSquares = resolveMovement({
             type: 'pawn',
             color: 'white',
+            position: 'a4',
+            id: 'white-pawn-2',
+            moved: true,
+        }, testStore);
+        const legalBlackSquares = resolveMovement({
+            type: 'pawn',
+            color: 'black',
+            position: 'b5',
+            id: 'black-pawn-2',
+            moved: true,
+        }, testStore);
+        expect(legalWhiteSquares.sort()).toEqual(['a4', 'a5'].sort())
+        expect(legalBlackSquares.sort()).toEqual(['b5','b4'].sort())
+    })
+    it('will return the correct square for a pawns opening move', () => {
+        const legalWhiteSquares = resolveMovement({
+            type: 'pawn',
+            color: 'white',
             position: 'a2',
-            id: 'white-pawn-2'
+            id: 'white-pawn-2',
+            moved: false,
         }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'pawn',
             color: 'black',
             position: 'b7',
-            id: 'black-pawn-2'
+            id: 'black-pawn-2',
+            moved: false,
         }, testStore);
         expect(legalWhiteSquares.sort()).toEqual(['a2', 'a3', 'a4'].sort())
-        expect(legalBlackSquares.sort()).toEqual(['b7','b6', 'b5'].sort())
+        expect(legalBlackSquares.sort()).toEqual(['b7', 'b6', 'b5'].sort())
     })
     it('will return the correct legal squares when a pawn capture is possible', () => {
         const storeWithCatchableBlackPawn = {
@@ -245,16 +265,18 @@ describe('resolveMovement', () => {
             type: 'pawn',
             color: 'white',
             position: 'g2',
-            id: 'white-pawn-7'
+            id: 'white-pawn-7',
+            moved: true,
         }, storeWithCatchableBlackPawn);
         const legalBlackSquares = resolveMovement({
             type: 'pawn',
             color: 'black',
             position: 'g7',
             id: 'black-pawn-7',
+            moved: true,
         }, storeWithCatchableWhitePawn);
-        expect(legalWhiteSquares.sort()).toEqual(['g2','g3', 'g4', 'h3'].sort());
-        expect(legalBlackSquares.sort()).toEqual(['g7','g5', 'g6', 'h6'].sort());
+        expect(legalWhiteSquares.sort()).toEqual(['g2','g3', 'h3'].sort());
+        expect(legalBlackSquares.sort()).toEqual(['g7', 'g6', 'h6'].sort());
     })
     it('will return the correct legal squares for diagonal moves', () => {
         const legalWhiteSquares = resolveMovement({
@@ -262,12 +284,14 @@ describe('resolveMovement', () => {
             color: 'white',
             position: 'c1',
             id: 'white-bishop-1',
+            moved: false,
         }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'bishop',
             color: 'black',
             position: 'c8',
             id: 'black-bishop-1',
+            moved: false,
         }, testStore);
         expect(legalWhiteSquares.sort()).toEqual(['c1', 'b2', 'a3', 'd2', 'e3', 'f4', 'g5', 'h6'].sort())
         expect(legalBlackSquares.sort()).toEqual(['c8', 'b7', 'a6', 'd7', 'e6', 'f5', 'g4', 'h3'].sort())
@@ -278,12 +302,14 @@ describe('resolveMovement', () => {
             color: 'white',
             position: 'b1',
             id: 'white-knight-1',
+            moved: false,
         }, testStore);
         const legalBlackSquares = resolveMovement({
             type: 'knight',
             color: 'black',
             position: 'b8',
             id: 'black-knight-1',
+            moved: false,
         }, testStore);
         expect(legalWhiteSquares.sort()).toEqual(['a3', 'c3', 'd2'].sort())
         expect(legalBlackSquares.sort()).toEqual(['a6', 'c6', 'd7'].sort())

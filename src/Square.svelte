@@ -56,6 +56,7 @@
             return {
               ...piece,
               position: squareId,
+              moved: true,
             };
           } else {
             console.log("ILLEGAL MOVE");
